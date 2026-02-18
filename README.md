@@ -26,7 +26,7 @@ A Telegram bot that helps you find archived versions of web pages using the Inte
 
 ### Step‑by‑Step Guide
 
-###Create a Telegram Bot:
+### Create a Telegram Bot:
   - Message `@BotFather` on Telegram.
   - Use the `/newbot` command to create a new bot.
   - Copy the **API Token** provided by BotFather.
