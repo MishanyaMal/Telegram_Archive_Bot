@@ -2,7 +2,7 @@ import webbrowser
 import requests
 import telebot
 
-token = '8146333746:AAFw-Jj-BghNwORJ5PUQg8bPFEwMtcDoTGg'
+token = 'YOUR_BOT_TOKEN'
 bot = telebot.TeleBot(token)
 
 @bot.message_handler(commands=['start'])
@@ -27,5 +27,6 @@ def show(message):
         webbrowser.open(old_site)
     except:
         bot.reply_to(message, f"Sorry, no luck finding {site}")
+
 
 bot.polling(none_stop=True)
