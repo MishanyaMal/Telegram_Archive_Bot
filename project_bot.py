@@ -1,32 +1,22 @@
-import webbrowser
-import requests
+import logging
 import telebot
 
-token = 'YOUR_BOT_TOKEN'
-bot = telebot.TeleBot(token)
+from config_reader import config
+from handlers import commands
 
-@bot.message_handler(commands=['start'])
-def start(message):
-    bot.reply_to(message, "Let's find an old website.\n"
-                          "Type </show> a website URL and a year, month, and day, like 20150613: ")
+bot = telebot.TeleBot(
+    token=config.BOT_TOKEN.get_secret_value()
+)
 
-@bot.message_handler(commands=['show'])
-def show(message):
-    args = message.text.split(' ', 2)
-    if len(args) < 3:
-        bot.reply_to(message, 'Try again')
-        return
-    site, era = args[1], args[2]
-    url = "http://archive.org/wayback/available?url=%s&timestamp=%s" % (site, era)
-    response = requests.get(url)
-    data = response.json()
-    try:
-        old_site = data["archived_snapshots"]["closest"]["url"]
-        bot.reply_to(message, f'Found this copy: {old_site}\n'
-                              f'It should appear in your browser now.')
-        webbrowser.open(old_site)
-    except:
-        bot.reply_to(message, f"Sorry, no luck finding {site}")
+def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
 
+    commands.register_handlers(bot)
 
-bot.polling(none_stop=True)
+    return bot.polling(none_stop=True)
+
+if __name__ == '__main__':
+	main()
